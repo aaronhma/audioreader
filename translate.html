@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keywords" content="Second Hand Helpers Team">
+  <title>Audio Reader</title>
+  <link rel="icon" href="./icon.jpeg">
+  <style type="text/css">
+			body{
+				background: #add8e6;
+			}
+			.container{
+				background: #f6f6f6;
+				position: absolute;
+				top:50%;
+				left:50%;
+				transform: translateX(-50%) translateY(-50%);
+				width: 400px;
+				padding:20px;
+				box-shadow: 0 0 10px 0 #ccc;
+			}
+			.container textarea{
+				width: 390px;
+				height: 100px;
+				resize: none;
+				outline: none;
+				border: 1px solid #ccc;
+			}
+			.container label{
+				display: block;
+				width: 400px;
+			}
+			.container label span{
+				width: 100px;
+				margin-top: 20px;
+				display: inline-block;
+			}
+			.container label select, .container label input{
+				width: 290px;
+			}
+			.button{
+				display: inline-block;
+				background: #f6f6f6;
+				padding: 10px 20px;
+				color: #000;
+				border: 1px solid #ccc;
+				cursor: pointer;
+				margin-top: 20px;
+			}
+			.button:hover{
+				box-shadow: 4px 4px 10px 0 #ccc;
+			}
+      h1:hover {
+        color: #008000;
+      }
+      .fa-fa {
+        color: #ff0000;
+      }
+			.fa-fa3 {
+				width: 20px;
+				line-height: 1px;
+			}
+		</style>
+</head>
+<body>
+  <header>
+    <h1 onclick="myFunction()">Second Hand Helpers Team</h1>
+    <hr />
+    <h2 class="fa-fa"><img src="audio.png" alt="Audio" class="fa-fa3" />Audio Reader</h2>
+  </header>
+  <div class="container">
+			<h3 style="text-align: center;">Second Hand Helpers Team Audio Reader</h3>
+			<textarea id="myText" placeholder="Type Here To Read"></textarea>
+			<label>
+				<span>Voice</span>
+				<select id="voiceOptions"></select>
+			</label>
+			<label>
+				<span>Volume</span>
+				<input type="range" id="volumeSlider" min="0" max="1" value="0.5" step="0.1" />
+			</label>
+			<label>
+				<span>rate</span>
+				<input type="range" id="rateSlider" min="0" max="1" value="0.5" step="0.1" />
+			</label>
+			<label>
+				<span>Pitch</span>
+				<input type="range" id="pitchSlider" min="0" max="2" value="0.5" step="0.1" />
+			</label>
+			<div class="button" onclick="speak();" style="width: 90%;"><img src="./speak.jpeg" alt="Speak" style="width: 40px; height: 40px; vertical-align: middle; display: table-cell; margin-left: auto; margin-right: auto; padding-left: 150px; padding-right: 150px;" /></div>
+		</div>
+		<script type="text/javascript">
+			function checkCompatibilty () {
+				if(!('speechSynthesis' in window)){
+          alert("Your browser does not support Second Hand Helpers Team Book Reader.\nPlease upgrade your browser.");
+				}
+			};
+
+			checkCompatibilty();
+
+			let voiceOptions = document.getElementById('voiceOptions');
+			let volumeSlider = document.getElementById('volumeSlider');
+			let rateSlider = document.getElementById('rateSlider');
+			let pitchSlider = document.getElementById('pitchSlider');
+			let myText = document.getElementById('myText');
+			let voiceMap = [];
+
+			function loadVoices () {
+				let voices = speechSynthesis.getVoices();
+				for (let i = 0; i < voices.length; i++) {
+					let voice = voices[i];
+					let option = document.createElement('option');
+					option.value = voice.name;
+					option.innerHTML = voice.name;
+					voiceOptions.appendChild(option);
+					voiceMap[voice.name] = voice;
+				};
+			};
+
+			window.speechSynthesis.onvoiceschanged = function(e){
+				loadVoices();
+			};
+
+			function speak () {
+				let msg = new SpeechSynthesisUtterance();
+				msg.volume = volumeSlider.value;
+				msg.voice = voiceMap[voiceOptions.value];
+				msg.rate = rateSlider.value;
+				msg.Pitch = pitchSlider.value;
+				msg.text = myText.value;
+				window.speechSynthesis.speak(msg);
+			};
+			function myFunction() {
+    		location.reload();
+			}
+		</script>
+</body>
+</html>
